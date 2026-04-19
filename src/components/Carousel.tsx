@@ -21,7 +21,10 @@ const Carousel: React.FC<Props> = ({
   const [startImage, changeStartImage] = useState(0);
   const height = frameSize * itemWidth;
   const imgs = images;
-  const maxStart = Math.max(0, imgs.length - frameSize);
+  const maxStart = imgs.length - frameSize;
+  const minStart = frameSize;
+
+  console.log(maxStart)
 
   return (
     <div className="Carousel">
@@ -48,7 +51,7 @@ const Carousel: React.FC<Props> = ({
                 <img
                   width={itemWidth}
                   src={img}
-                  alt="2"
+                  alt={`img${i}`}
                   style={{ width: itemWidth + 'px' }}
                 />
               </li>
@@ -61,6 +64,14 @@ const Carousel: React.FC<Props> = ({
         className="Carousel__button Carousel__button--prev"
         type="button"
         onClick={() => {
+          if (infinite) {
+            if (startImage < minStart) {
+              changeStartImage(maxStart);
+
+              return;
+            }
+          }
+
           if (startImage - step >= 0) {
             changeStartImage(prev => prev - step);
           }
@@ -74,12 +85,14 @@ const Carousel: React.FC<Props> = ({
         type="button"
         onClick={() => {
           if (infinite) {
-            if (!imgs[startImage + step]) {
+            if (startImage >= maxStart) {
               changeStartImage(0);
 
               return;
             }
-          } else if (startImage + step <= maxStart) {
+          }
+
+          if (startImage < maxStart) {
             changeStartImage(prev => prev + step);
           }
         }}

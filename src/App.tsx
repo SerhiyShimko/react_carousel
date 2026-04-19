@@ -82,7 +82,7 @@ class App extends React.Component<{}, State> {
             type="number"
             id="durationId"
             placeholder="write here..."
-            className="App__input App__input--fnimationDuration"
+            className="App__input App__input--animationDuration"
             onChange={e => {
               this.setState({ animationDuration: +e.target.value });
             }}
