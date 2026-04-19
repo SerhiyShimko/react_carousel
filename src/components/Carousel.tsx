@@ -3,11 +3,11 @@ import './Carousel.scss';
 
 type Props = {
   images: string[];
-  step: number;
-  frameSize: number;
-  itemWidth: number;
-  animationDuration: number;
-  infinite: boolean;
+  step?: number;
+  frameSize?: number;
+  itemWidth?: number;
+  animationDuration?: number;
+  infinite?: boolean;
 };
 
 const Carousel: React.FC<Props> = ({
@@ -21,6 +21,7 @@ const Carousel: React.FC<Props> = ({
   const [startImage, changeStartImage] = useState(0);
   const height = frameSize * itemWidth;
   const imgs = images;
+  const maxStart = Math.max(0, imgs.length - frameSize);
 
   return (
     <div className="Carousel">
@@ -75,10 +76,10 @@ const Carousel: React.FC<Props> = ({
           if (infinite) {
             if (!imgs[startImage + step]) {
               changeStartImage(0);
-            }
-          }
 
-          if (startImage + step <= imgs.length) {
+              return;
+            }
+          } else if (startImage + step <= maxStart) {
             changeStartImage(prev => prev + step);
           }
         }}
